@@ -8,7 +8,8 @@ import re
 import json
 from telebot import types
 from bot_command_dictionary import BOT_FUNCTIONS
-from functions import start, github, soap_country, weather, translate, exc_rates, numbers, http_cats
+from functions import start, github, soap_country, weather, translate, exc_rates, numbers, http_cats, branch
+
 
 token = os.environ["TBOTTOKEN"]
 bot = telebot.TeleBot(token)
@@ -88,6 +89,11 @@ def get_fact_by_number(message):
         bot.send_message(message.chat.id, text=fact_by_random)
     else:
         bot.send_message(message.chat.id, text="Некорректный формат команды. Повторите попытку!")
+
+@bot.message_handler(commands=BOT_FUNCTIONS['branch'].commands)
+def get_branch(message):
+    branch_text = branch.get_branch(message.text)
+    bot.send_message(message.chat.id, text=branch_text)
 
 @bot.message_handler(commands=BOT_FUNCTIONS['http'].commands)
 def get_http(message):
